@@ -4,7 +4,7 @@
   <h3>{{currentQuestion.question}}</h3>
   <ol>
     <li *ngFor="let option of currentQuestion.options">
-      <button>{{ option.answer }}</button>
+      <button (click)="checkAnswer($event.target, option.isCorrect)">{{ option.answer }}</button>
     </li>
   </ol>
 
