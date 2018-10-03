@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { QuestionService } from './question.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,18 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'angular-trivia';
+
+  questions: any;
+
+  constructor(private service: QuestionService) {
+    this.fetchQuestions();
+  }
+
+  fetchQuestions() {
+    this.service.getQuestions().subscribe((questions) => {
+      this.questions = questions;
+      console.log('questions: ', this.questions);
+    });
+  }
+
 }
