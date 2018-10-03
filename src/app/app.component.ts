@@ -10,6 +10,8 @@ import { Question } from './question.interface';
 export class AppComponent {
 
   questions: Question[];
+  currentQuestion: Question;
+  questionIndex = 0;
 
   constructor(private service: QuestionService) {
     this.fetchQuestions();
@@ -18,6 +20,7 @@ export class AppComponent {
   fetchQuestions() {
     this.service.getQuestions().subscribe((questions: Question[]) => {
       this.questions = questions;
+      this.currentQuestion = this.questions[this.questionIndex];
       console.log('questions: ', this.questions);
     });
   }

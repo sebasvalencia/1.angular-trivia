@@ -1,7 +1,11 @@
 <h1>Angular Trivia</h1>
 
-<ul>
-  <li *ngFor="let question of questions">
-    {{ question.question }}
-  </li>
-</ul>
+<div *ngIf="currentQuestion">
+  <h3>{{currentQuestion.question}}</h3>
+  <ol>
+    <li *ngFor="let option of currentQuestion.options">
+      <button>{{ option.answer }}</button>
+    </li>
+  </ol>
+
+</div>
