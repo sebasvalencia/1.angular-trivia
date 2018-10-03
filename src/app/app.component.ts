@@ -25,4 +25,16 @@ export class AppComponent {
     });
   }
 
+  checkAnswer(target: HTMLElement, isCorrect: boolean) {
+    target = target.nodeName === 'SPAN' ? target.parentElement : target;
+    console.log('target', target, 'isCorrect: ', isCorrect);
+
+    if (isCorrect) {
+      target.style.backgroundColor = 'green';
+    } else {
+      target.style.backgroundColor = 'red';
+    }
+
+  }
+
 }
