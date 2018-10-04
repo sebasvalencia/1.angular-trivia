@@ -4,8 +4,14 @@
   <h3>{{currentQuestion.question}}</h3>
   <ol>
     <li *ngFor="let option of currentQuestion.options">
-      <button (click)="checkAnswer($event.target, option.isCorrect)">{{ option.answer }}</button>
+      <button 
+        (click)="checkAnswer($event.target, option.isCorrect)"
+        [disabled]="!!answerMessage"
+        >{{ option.answer }}</button>
     </li>
   </ol>
+  <ng-container *ngIf="answerMessage">
+    <h4>Your answer is: {{ answerMessage }}</h4>
+  </ng-container>
 
 </div>

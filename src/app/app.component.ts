@@ -12,6 +12,7 @@ export class AppComponent {
   questions: Question[];
   currentQuestion: Question;
   questionIndex = 0;
+  answerMessage = '';
 
   constructor(private service: QuestionService) {
     this.fetchQuestions();
@@ -28,11 +29,14 @@ export class AppComponent {
   checkAnswer(target: HTMLElement, isCorrect: boolean) {
     target = target.nodeName === 'SPAN' ? target.parentElement : target;
     console.log('target', target, 'isCorrect: ', isCorrect);
+    this.answerMessage = '';
 
     if (isCorrect) {
       target.style.backgroundColor = 'green';
+      this.answerMessage = 'Congratulations!!';
     } else {
       target.style.backgroundColor = 'red';
+      this.answerMessage = 'Wrong answer';
     }
 
   }
