@@ -1,21 +1,23 @@
 <h1>Angular Trivia</h1>
 
-<div *ngIf="currentQuestion">
+<div *ngIf="currentQuestion && !isGameOver">
   <h3>{{currentQuestion.question}}</h3>
   <ol>
     <li *ngFor="let option of currentQuestion.options">
       <button 
         (click)="checkAnswer($event.target, option.isCorrect)"
         [disabled]="!!answerMessage"
+        color="primary"
         >{{ option.answer }}</button>
     </li>
   </ol>
   <ng-container *ngIf="answerMessage">
     <h4>Your answer is: {{ answerMessage }}</h4>
+    <span>{{ countdown }}</span>
   </ng-container>
 
 </div>
-<div>
+<div *ngIf="currentQuestion && isGameOver">
   <h2>Game Over</h2>
   <h3>Your score is: {{ finalScore }}</h3>
 </div>
