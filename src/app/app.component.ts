@@ -52,7 +52,7 @@ export class AppComponent {
           this.answerMessage = '';
           if (this.questionIndex < this.questions.length) {
             this.currentQuestion = this.questions[++this.questionIndex];
-            console.log('this.currentQuestion: ', this.currentQuestion);
+            // console.log('this.currentQuestion: ', this.currentQuestion);
           }
         });
 
@@ -68,6 +68,10 @@ export class AppComponent {
 
   get finalScore() {
     return this.correctAnswersCount * this.QUESTION_SCORE;
+  }
+
+  get isGameOver() {
+    return this.questionIndex === this.questions.length - 1;
   }
 
 }
