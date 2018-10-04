@@ -13,6 +13,8 @@ export class AppComponent {
   currentQuestion: Question;
   questionIndex = 0;
   answerMessage = '';
+  correctAnswersCount = 0;
+  readonly QUESTION_SCORE = 3;
 
   constructor(private service: QuestionService) {
     this.fetchQuestions();
@@ -33,12 +35,16 @@ export class AppComponent {
 
     if (isCorrect) {
       target.style.backgroundColor = 'green';
+      this.correctAnswersCount++;
       this.answerMessage = 'Congratulations!!';
     } else {
       target.style.backgroundColor = 'red';
       this.answerMessage = 'Wrong answer';
     }
+  }
 
+  get finalScore() {
+    return this.correctAnswersCount * this.QUESTION_SCORE;
   }
 
 }
