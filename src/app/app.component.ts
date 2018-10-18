@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { QuestionService } from './question.service';
 import { Question } from './question.interface';
 import { interval } from 'rxjs';
 import { take } from 'rxjs/operators';
-
+import { MatSnackBar } from '@angular/material';
 
 
 @Component({
@@ -22,15 +22,24 @@ export class AppComponent {
   countdown: number;
   readonly TRANSITION_SECONDS = 5;
   readonly COUNTDOWN_INTERVAL = 1000;
+  inWelcome = true;
 
-  constructor(private service: QuestionService) {
+  @ViewChild('mainWrapper') mainContainer: ElementRef;
+
+  constructor(private service: QuestionService, public snackBar: MatSnackBar) {
     this.fetchQuestions();
   }
 
+  startApp() {
+    this.inWelcome = false;
+  }
+
   fetchQuestions() {
-    this.service.getQuestions().subscribe((questions: Question[]) => {
-      this.questions = questions;
+    this.service.getQuestions().subscribe(
+      (questions: Question[]) => {
+      this.questions = questions.sort((a, b) =>  (0.5 - Math.random()));
       this.currentQuestion = this.questions[this.questionIndex];
+      this.currentQuestion.options = this.currentQuestion.options.sort((a, b) => (0.5 - Math.random())); 
       console.log('questions: ', this.questions);
     });
   }
@@ -48,21 +57,35 @@ export class AppComponent {
         () => {
           this.countdown--;
         }, null,
-        () => {
-          this.answerMessage = '';
-          if (this.questionIndex < this.questions.length) {
-            this.currentQuestion = this.questions[++this.questionIndex];
-            // console.log('this.currentQuestion: ', this.currentQuestion);
-          }
-        });
+        () => this.transitionToNextQuestion(),
+      );
 
     if (isCorrect) {
-      target.style.backgroundColor = 'green';
+      target.classList.add('correct');
       this.correctAnswersCount++;
-      this.answerMessage = 'Congratulations!!';
+      this.answerMessage = 'That\'s correct. Congratulations!! 🎇 🤗 🎆';
     } else {
-      target.style.backgroundColor = 'red';
-      this.answerMessage = 'Wrong answer';
+      target.classList.add('wrong');
+      this.answerMessage = 'Maybe next time, keep learning!!💪💪';
+    }
+    this.snackBar.open(this.answerMessage,'', {
+      duration: this.TRANSITION_SECONDS*1000,
+    });
+  }
+
+  transitionToNextQuestion() {
+    this.mainContainer.nativeElement.classList.add('hide');
+    setTimeout(this.loadNextQuestion, 250);
+  }
+
+  loadNextQuestion = () => {
+    this.mainContainer.nativeElement.classList.remove('hide');
+    this.mainContainer.nativeElement.classList.add('show');
+    this.answerMessage = '';
+    if (this.questionIndex < this.questions.length) {
+      this.currentQuestion = this.questions[
+        ++this.questionIndex
+      ];
     }
   }
 
