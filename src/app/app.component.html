@@ -1,23 +1,37 @@
-<h1>Angular Trivia</h1>
-
-<div *ngIf="currentQuestion && !isGameOver">
-  <h3>{{currentQuestion.question}}</h3>
-  <ol>
-    <li *ngFor="let option of currentQuestion.options">
-      <button 
-        (click)="checkAnswer($event.target, option.isCorrect)"
-        [disabled]="!!answerMessage"
-        color="primary"
-        >{{ option.answer }}</button>
-    </li>
-  </ol>
-  <ng-container *ngIf="answerMessage">
-    <h4>Your answer is: {{ answerMessage }}</h4>
-    <span>{{ countdown }}</span>
-  </ng-container>
-
-</div>
-<div *ngIf="currentQuestion && isGameOver">
-  <h2>Game Over</h2>
-  <h3>Your score is: {{ finalScore }}</h3>
-</div>
+<div class="main-wrapper" #mainWrapper>
+    <div class="small-logo" *ngIf="!inWelcome">
+      <img src="./assets/img/angular.svg" alt="">
+    </div>
+    <div class="welcome" *ngIf="inWelcome">
+      <div class="logo">
+        <img src="./assets/img/angular.svg" alt="">
+      </div>
+      <div class="text">
+        <h2>Welcome to <br> Angular TriviApp</h2>
+        <p><button mat-button (click)="startApp()">Start <mat-icon>arrow_forward</mat-icon></button></p>
+      </div>
+    </div>
+  
+  
+    <div class="question-wrapper" *ngIf="currentQuestion && !isGameOver && !inWelcome">
+      <h3>{{currentQuestion.question}}</h3>
+      <ol>
+        <li *ngFor="let option of currentQuestion.options">
+          <button mat-button [disabled]="!!answerMessage" (click)="checkAnswer($event.target,option.isCorrect)">
+            {{ option.answer }}
+            <mat-icon class="correct">check</mat-icon>
+            <mat-icon class="wrong">close</mat-icon>
+          </button>
+        </li>
+      </ol>
+    </div>
+  
+    <div class="answer-wrapper" *ngIf="answerMessage">
+      <h4>Next question...</h4>
+      <span class="countdown">{{ countdown }}</span>
+    </div>
+    <div *ngIf="currentQuestion && isGameOver">
+      <h2>Game Over</h2>
+      <h3>Your score is: {{finalScore}}</h3>
+    </div>
+  </div>
